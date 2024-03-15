@@ -48,7 +48,8 @@ def update():
     def main():
         files = [
             ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/main.py", "main.py"),
-            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/dank.py", "dank.py")
+            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/dank.py", "dank.py"), 
+            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/FunctionsByRS.py", "FunctionsByRS.py")
         ]
 
         for url, filename in files:
