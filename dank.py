@@ -416,3 +416,57 @@ class Dank:
                 conn.commit()
             else:
                 print("Dank> Wrong Answer!!!!")
+    def highlow(self, username):
+        rt = random.randint(1, 5)
+        hiddennumber = random.randint(1, 100)
+        hint = random.randint(1, 100)
+        print("Dank> I just chose a secret number between 1 and 100.")
+        time.sleep(rt)
+        print(f"Dank> Is the secret number higher or lower than {hint}?")
+        time.sleep(rt)
+        print(f"Dank> | Lower -> if the number is lower than {hint}.")
+        print(f"Dank> | Jackpot -> If the number is same as {hint}.")
+        print(f"Dank> | Higher -> If the number is higher than {hint}.")
+        time.sleep(rt)
+        print("      [Lower] [Jackpot!] [Higher]")
+        time.sleep(rt)
+        try:
+            guesshiddennumber = input(f"{username}> ")
+        except:
+            print("")
+            print("Enter a number dude....")
+            print("")
+        if guesshiddennumber.lower() == "lower":
+            if hiddennumber > hint:
+                print("You guessed it correctly!")
+                randomprize = random.randint(1, 500)
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, guesshiddennumber, username))
+                conn.commit()
+                print(f"Dank> Here is your {randomprize}")
+            else:
+                print("Dank> You guessed it wrong!")
+                time.sleep(rt)
+                print(f"Dank> The secret number was {hiddennumber}")
+        elif guesshiddennumber.lower() == "jackpot":
+            if hiddennumber == hint:
+                print("You guessed it correctly!")
+                randomprize = random.randint(1, 500)
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, guesshiddennumber, username))
+                conn.commit()
+                print(f"Dank> Here is your {randomprize}")
+            else:
+                print("Dank> You guessed it wrong!")
+                time.sleep(rt)
+                print(f"Dank> The secret number was {hiddennumber}")
+        elif guesshiddennumber.lower() == "higher":
+            if hiddennumber < hint:
+                print("You guessed it correctly!")
+                randomprize = random.randint(1, 500)
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, guesshiddennumber, username))
+                conn.commit()
+                print(f"Dank> Here is your {randomprize}")
+            else:
+                print("Dank> You guessed it wrong!")
+                time.sleep(rt)
+                print(f"Dank> The secret number was {hiddennumber}")
+        
