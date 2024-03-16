@@ -16,7 +16,7 @@ class Crimegenerator:
         self.zab = random.randint(1, 15000)
         self.fake_crimes_to_commit = {
             "Hacking": [f"You hacked into Dank Memer and gave yourself {self.xyz}\u20b9. Evil!", "You hacked into your own router and found out the ISP does not actually care about you.", 'You got caught hacking into Dank Memer and Badosz "Thanos Snapped" you'],
-            "Bank robbing": [f"You robbed a bank irl and found {self.yza}\u20b9. Cute!", "You tried to rob a bank but got scared, lol", "You robbed a bank and the little old lady was packing heat, you did NOT make it out"],
+            "Bank_robbing": [f"You robbed a bank irl and found {self.yza}\u20b9. Cute!", "You tried to rob a bank but got scared, lol", "You robbed a bank and the little old lady was packing heat, you did NOT make it out"],
             "Trespassing": [f"You walked straight into someone else's yard and found {self.zab}\u20b9. Free real estate!", "You got confused about what trespassing was and walked into your own back yard.", "You tried trespassing onto the property of someone with a gun f*tish and it did NOT go well"],
             "Shoplifting": [f"You managed to steal {self.xyz}\u20b9. Money Heist!", "You tried to steal something, but the shop was closed!", "You stole an unknown drink and drank it. It turned out to be poison and you died. RIP"],
             "Cyber bullying": [f"You bullied a kid and he sent you {self.abc}\u20b9 to stop! I hope that kid grows up richer than you.", "You tried to bully a kid, but quickly got banned by mods. LOL, seeya idiot.", "You laughed at a kid so much, you choked to death. Who is laughing now? Imagine being a bully."],
@@ -44,13 +44,13 @@ class Crimegenerator:
             c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Bank_robbing(self, name):
-        d = self.fake_crimes_to_commit["Bank robbing"]
+        d = self.fake_crimes_to_commit["Bank_robbing"]
         chances = [10, 50, 40]
         hehe = random.choices(d, chances, k=1)[0]
         if hehe == d[0]:
             money = self.yza
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -58,7 +58,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
             conn.commit()
     def Trespassing(self, name):
         d = self.fake_crimes_to_commit["Trespassing"]
@@ -67,7 +67,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.zab
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -84,7 +84,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.xyz
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -118,7 +118,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.xyz
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -126,7 +126,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
             conn.commit()
     def Piracy(self, name):
         d = self.fake_crimes_to_commit["Piracy"]
@@ -135,7 +135,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.abc
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -143,7 +143,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
             conn.commit()
     def Treason(self, name):
         d = self.fake_crimes_to_commit["Treason"]
@@ -152,7 +152,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.abc
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -160,7 +160,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
             conn.commit()
     def Vandalism(self, name):
         d = self.fake_crimes_to_commit["Vandalism"]
@@ -169,7 +169,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.xyz
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -177,7 +177,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
             conn.commit()
     def crime(self, username):
         random3crime = random.sample(list(self.fake_crimes_to_commit.keys()), k=3)
