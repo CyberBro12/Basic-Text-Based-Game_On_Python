@@ -118,7 +118,7 @@ if st == "1":
                     user.crime(username=name)
                 last_command_usage[cd] = current_time  # Update last command usage time
             else:
-                print("Command is on cooldown. Please wait before using it again.")
+                print(f"Command is on cooldown. Please wait {cd}Seconds before using it again.")
         elif cd == "/update":
             update()
         else:
@@ -148,7 +148,7 @@ elif st == "2":
                     elif cd == "/beg":
                         Dank().beg(name)
                     elif cd == "/crime":
-                        user = Crimegenerator
+                        user = Crimegenerator()
                         user.crime(username=name)
                     last_command_usage[cd] = current_time  # Update last command usage time
                 else:
