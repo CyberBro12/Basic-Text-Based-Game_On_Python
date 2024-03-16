@@ -114,7 +114,7 @@ if st == "1":
                 elif cd == "/beg":
                     Dank().beg(name)
                 elif cd == "/crime":
-                    user = Crimegenerator
+                    user = Crimegenerator()
                     user.crime(username=name)
                 last_command_usage[cd] = current_time  # Update last command usage time
             else:
