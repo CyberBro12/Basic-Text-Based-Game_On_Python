@@ -19,7 +19,7 @@ class Crimegenerator:
             "Bank_robbing": [f"You robbed a bank irl and found {self.yza}\u20b9. Cute!", "You tried to rob a bank but got scared, lol", "You robbed a bank and the little old lady was packing heat, you did NOT make it out"],
             "Trespassing": [f"You walked straight into someone else's yard and found {self.zab}\u20b9. Free real estate!", "You got confused about what trespassing was and walked into your own back yard.", "You tried trespassing onto the property of someone with a gun f*tish and it did NOT go well"],
             "Shoplifting": [f"You managed to steal {self.xyz}\u20b9. Money Heist!", "You tried to steal something, but the shop was closed!", "You stole an unknown drink and drank it. It turned out to be poison and you died. RIP"],
-            "Cyber bullying": [f"You bullied a kid and he sent you {self.abc}\u20b9 to stop! I hope that kid grows up richer than you.", "You tried to bully a kid, but quickly got banned by mods. LOL, seeya idiot.", "You laughed at a kid so much, you choked to death. Who is laughing now? Imagine being a bully."],
+            "cyber_bullying": [f"You bullied a kid and he sent you {self.abc}\u20b9 to stop! I hope that kid grows up richer than you.", "You tried to bully a kid, but quickly got banned by mods. LOL, seeya idiot.", "You laughed at a kid so much, you choked to death. Who is laughing now? Imagine being a bully."],
             "Murder": [f"You murdered a random stranger in a dark alley. There was {self.xyz}\u20b9 in his wallet! Was it worth it?", "You tried to murder a random stranger, but he got away! You can't even murder properly.","You were holding the gun upside down and killed yourself! Imagine being this stupid!"],
             "Piracy": [f'You ripped off your favorite movies and also found {self.abc}\u20b9',"You tried to pirate an adult film and got distracted on the free websites instead", 'The FBI found out about that copy of your Air Bud DVD you made and "took you out"'],
             "Treason": [f"You successfully overthrew the government with your treason and in the halls of congress found {self.abc}\u20b9.", "You failed to host an insurrection, everyone is laughing at you.", "You were caught and the punishment for treason is death."],
@@ -95,7 +95,7 @@ class Crimegenerator:
             c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def cyber_bullying(self, name):
-        d = self.fake_crimes_to_commit["Cyber bullying"]
+        d = self.fake_crimes_to_commit["cyber_bullying"]
         chances = [10, 50, 40]
         hehe = random.choices(d, chances, k=1)[0]
         if hehe == d[0]:
