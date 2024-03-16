@@ -75,7 +75,8 @@ cooldowns = {
     "/bal": 10,   # Cooldown time for /bal command in seconds
     "/dig": 20,   # Cooldown time for /dig command in seconds
     "/beg": 15,   # Cooldown time for /beg command in seconds
-    "/crime": 30  # Cooldown time for /crime command in seconds
+    "/crime": 30,  # Cooldown time for /crime command in seconds
+    "/highlow": 20
 }
 
 last_command_usage = {}  # Dictionary to store the last time each command was used
@@ -116,6 +117,8 @@ if st == "1":
                 elif cd == "/crime":
                     user = Crimegenerator()
                     user.crime(username=name)
+                elif cd == "/highlow":
+                    Dank().highlow(username=name)
                 last_command_usage[cd] = current_time  # Update last command usage time
             else:
                 print(f"Command is on cooldown. Please wait {cd}Seconds before using it again.")
@@ -150,6 +153,9 @@ elif st == "2":
                     elif cd == "/crime":
                         user = Crimegenerator()
                         user.crime(username=name)
+                    elif cd == "/highlow":
+                        user = Dank()
+                        user.highlow(username=name)
                     last_command_usage[cd] = current_time  # Update last command usage time
                 else:
                     print("Command is on cooldown. Please wait before using it again.")
@@ -172,8 +178,8 @@ elif st == "3":
 
 elif st == "4":
     print("        Update Logs")
-    print("      *Big Updates*\n")
-    print(f"     1. Added new command '/crime'\n     2. Fixed /update command\n     3.Added Cooldowns\n\n  Version-{versionoffile}")
+    print("      *Updates*\n")
+    print(f"     1. Added new command < /highlow >\n\n\n  Version-{versionoffile}")
 
 elif st == "5":
     exit()
