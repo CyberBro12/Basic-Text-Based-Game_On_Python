@@ -1,7 +1,7 @@
 import sqlite3
 import time
 import random
-from FunctionsByRS import * 
+from FunctionsByRS import animate_text  # Add other used functions/classes as needed
 rd = random
 
 #database
@@ -33,7 +33,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.xyz
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank set money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -41,7 +41,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Bank_robbing(self, name):
         d = self.fake_crimes_to_commit["Bank_robbing"]
@@ -58,7 +58,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Trespassing(self, name):
         d = self.fake_crimes_to_commit["Trespassing"]
@@ -75,7 +75,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Shoplifting(self, name):
         d = self.fake_crimes_to_commit["Shoplifting"]
@@ -92,7 +92,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def cyber_bullying(self, name):
         d = self.fake_crimes_to_commit["cyber_bullying"]
@@ -101,7 +101,7 @@ class Crimegenerator:
         if hehe == d[0]:
             money = self.abc
             print(hehe)
-            c.execute("UPDATE set money = money + ? WHERE name = ?", (money, name))
+            c.execute("UPDATE dank set money = money + ? WHERE name = ?", (money, name))
             conn.commit()
         elif hehe == d[1]:
             print(hehe)
@@ -109,7 +109,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE set money = money - ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank set money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Murder(self, name):
         d = self.fake_crimes_to_commit["Murder"]
@@ -126,7 +126,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Piracy(self, name):
         d = self.fake_crimes_to_commit["Piracy"]
@@ -143,7 +143,7 @@ class Crimegenerator:
             print(hehe)
             time.sleep(1)
             print("Dank> You lost 100000\u20b9 because you died")
-            c.execute("UPDATE dank SET money = money + ? WHERE name = ?", (100000, name))
+            c.execute("UPDATE dank SET money = money - ? WHERE name = ?", (100000, name))
             conn.commit()
     def Treason(self, name):
         d = self.fake_crimes_to_commit["Treason"]
@@ -258,7 +258,7 @@ class Dank:
         return r
 
     def Availablecommands(self):
-        return "< /bal >, < /dig >, < /beg >, < /update >, < /crime > more comming soon baby!!!!!!!"
+        return "< /dig >, < /beg >, < /crime >, </highlow> < /update >, < /bal >,  more comming soon baby!!!!!!!"
         
     def bal(self, name):
         c.execute("SELECT money FROM dank WHERE name=?", (name,))
@@ -350,14 +350,14 @@ class Dank:
             print(f"{name}> ", end="")
             animate_text(text=":|, Nvm..", delay=0.1)
         elif chance == 4:
-            ht = "Head", "Tails"
+            ht = ("Head", "Tails")
             dk = rd.choices(ht)
             print("Dank> ", end="")
             animate_text(text="Imma flip coin if it's a head you will give me money\n if it's a tail then i will take money", delay=0.1)
             time.sleep(3.5)
             animate_text("Coin Flips!!!!", 0.1)
             time.sleep(0.5)
-            if dk == "Head":
+            if dk[0] == "Head":
                 animate_text("Head", 0.1)
                 print("Dank> ", end="")
                 animate_text("It's a head i won money!!", 0.1)
@@ -370,7 +370,7 @@ class Dank:
                 dk = rd.choices(ht)
                 time.sleep(2.5)
                 if dk == "Head":
-                    d = "150"
+                    d = 150
                     animate_text("Head", 0.1)
                     print("Dank> ", end="")
                     animate_text("I won again hahaha gimme my money", 0.1)
@@ -389,7 +389,7 @@ class Dank:
                     c.execute("UPDATE dank SET money = money - ? WHERE name = ?", (d, name))
                     conn.commit()
             else:
-                d = "150"
+                d = 150
                 animate_text("Tails", 0.1)
                 print("Dank> ", end="")
                 animate_text("I am Still getting the money", 0.1)
@@ -439,7 +439,7 @@ class Dank:
             if hiddennumber > hint:
                 print("You guessed it correctly!")
                 randomprize = random.randint(1, 500)
-                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (guesshiddennumber, username))
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, username))
                 conn.commit()
                 print(f"Dank> Here is your {randomprize}")
             else:
@@ -450,7 +450,7 @@ class Dank:
             if hiddennumber == hint:
                 print("You guessed it correctly!")
                 randomprize = random.randint(1, 500)
-                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (guesshiddennumber, username))
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, username))
                 conn.commit()
                 print(f"Dank> Here is your {randomprize}")
             else:
@@ -461,7 +461,7 @@ class Dank:
             if hiddennumber < hint:
                 print("You guessed it correctly!")
                 randomprize = random.randint(1, 500)
-                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (guesshiddennumber, username))
+                c.execute("UPDATE dank SET money = money + ?  WHERE name = ?", (randomprize, username))
                 conn.commit()
                 print(f"Dank> Here is your {randomprize}")
             else:
