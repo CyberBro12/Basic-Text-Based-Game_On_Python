@@ -1,208 +1,133 @@
-from dank import Dank, Crimegenerator
 import time
 import sqlite3
-from threading import Thread
 import requests
 import hashlib
+from dank import Dank, Crimegenerator
 
-conn = sqlite3.connect("dankdata.db")
-c = conn.cursor()
-run = True
-versionoffile = 0.5
+DB_PATH = "dankdata.db"
+VERSION = 0.5
+FILES_TO_UPDATE = [
+    ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/main.py", "main.py"),
+    ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/dank.py", "dank.py"),
+    ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/FunctionsByRS.py", "FunctionsByRS.py")
+]
 
-# Create table if not exists
-c.execute("""CREATE TABLE IF NOT EXISTS dank (
-          name text,
-          money integer,
-          moneyinbank integer
-)""")
-conn.commit()
-
-# Function to update files from GitHub
-def update():
-    
-
-    def calculate_file_hash(filename):
-        # Get full path relative to the script
-        full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
-        with open(full_path, "rb") as f:
-            ile_contents = f.read()
-            file_hash = hashlib.md5(ile_contents).hexdigest()
-            return file_hash
-
-    def download_file(url, filename, expected_hash):
-        response = requests.get(url)
-        if response.status_code == 200:
-            file_content = response.content
-            actual_hash = hashlib.md5(file_content).hexdigest()
-            if actual_hash == expected_hash:
-                print("File is up-to-date")
-            else:
-                with open(filename, 'wb') as f:
-                    f.write(file_content)
-                print("File updated successfully")
-                print("Please restart the program to take effect!")
-        else:
-            print("Failed to update file")
-
-    def download_file(url, filename, expected_hash):
-        full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
-        response = requests.get(url)
-        if response.status_code == 200:
-            file_content = response.content
-            actual_hash = hashlib.md5(file_content).hexdigest()
-            if actual_hash == expected_hash:
-                print("File is up-to-date")
-            else:
-                with open(full_path, 'wb') as f:
-                    f.write(file_content)
-                print("File updated successfully")
-                print("Please restart the program to take effect!")
-        else:
-            print("Failed to update file")
-
-
-    def main():
-        files = [
-            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/main.py", "main.py"),
-            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/dank.py", "dank.py"), 
-            ("https://raw.githubusercontent.com/CyberBro12/Dank_In_Python/main/FunctionsByRS.py", "FunctionsByRS.py")
-        ]
-
-        for url, filename in files:
-            expected_hash = calculate_file_hash(filename)
-            download_file(url, filename, expected_hash)
-
-    main()
-
-print("Welcome to the meme game >:)")
-print("Playing for the first time?")
-print("1.New Game")
-print("2.Continue")
-print("3.About the game")
-print("4.Update Logs")
-print("5.Exit")
-print("")
-
-st = input("> ")
-print("")
-
-cooldowns = {
-    "/bal": 10,   # Cooldown time for /bal command in seconds
-    "/dig": 20,   # Cooldown time for /dig command in seconds
-    "/beg": 15,   # Cooldown time for /beg command in seconds
-    "/crime": 30,  # Cooldown time for /crime command in seconds
+COOLDOWNS = {
+    "/bal": 10,
+    "/dig": 20,
+    "/beg": 15,
+    "/crime": 30,
     "/highlow": 20
 }
 
-last_command_usage = {}  # Dictionary to store the last time each command was used
+def init_db():
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        c.execute("""CREATE TABLE IF NOT EXISTS dank (
+            name TEXT PRIMARY KEY,
+            money INTEGER,
+            moneyinbank INTEGER
+        )""")
+        conn.commit()
 
-if st == "1":
-    name = input("Enter your name: ")
-    c.execute("SELECT name FROM dank")
-    names = [row[0] for row in c.fetchall()]
-    conn.commit()
-    if name in names:
-        print("This user already exists! Continuing with the game.")
-    else:
-        pass
-    starter = [name, 0, 0]
-    time.sleep(1)
-    c.execute("INSERT INTO dank VALUES (?, ?, ?)", starter)
-    conn.commit()
-    print(f"Hello, {name}\n")
-    print("Type 'help' for more information\nOr 'exit' to exit the game\n")
-    
-    while run:
-        cd = input(f"{name}> ").lower()
-        current_time = time.time()
-        
-        if cd == "help":
-            print(f"Current Commands: ", end="")
-            print(Dank.Availablecommands(Dank))
-        elif cd == "exit":
-            exit()
-        elif cd in cooldowns:
-            if cd not in last_command_usage or current_time - last_command_usage[cd] >= cooldowns[cd]:
-                if cd == "/bal":
-                    Dank().bal(name)
-                elif cd == "/dig":
-                    Dank().dig(name)
-                elif cd == "/beg":
-                    Dank().beg(name)
-                elif cd == "/crime":
-                    user = Crimegenerator()
-                    user.crime(username=name)
-                elif cd == "/highlow":
-                    Dank().highlow(username=name)
-                last_command_usage[cd] = current_time  # Update last command usage time
+def get_names():
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        c.execute("SELECT name FROM dank")
+        return [row[0] for row in c.fetchall()]
+
+def add_user(name):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        c.execute("INSERT INTO dank VALUES (?, ?, ?)", (name, 0, 0))
+        conn.commit()
+
+def calculate_file_hash(filename):
+    try:
+        with open(filename, "rb") as f:
+            return hashlib.md5(f.read()).hexdigest()
+    except FileNotFoundError:
+        return None
+
+def update_files():
+    for url, filename in FILES_TO_UPDATE:
+        expected_hash = calculate_file_hash(filename)
+        response = requests.get(url)
+        if response.status_code == 200:
+            actual_hash = hashlib.md5(response.content).hexdigest()
+            if actual_hash != expected_hash:
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
+                print(f"{filename} updated. Please restart the program.")
             else:
-                remaining = int(cooldowns[cd] - (current_time - last_command_usage[cd]))
-                print(f"Command is on cooldown. Please wait {remaining} seconds before using it again.")
-        elif cd == "/update":
-            update()
+                print(f"{filename} is up-to-date.")
+        else:
+            print(f"Failed to update {filename}.")
+
+def game_loop(name):
+    last_command_usage = {}
+    print(f"Hello, {name}\nType 'help' for more information\nOr 'exit' to exit the game\n")
+    while True:
+        cmd = input(f"{name}> ").lower().strip()
+        current_time = time.time()
+        if cmd == "help":
+            print("Current Commands:", Dank.Availablecommands(Dank))
+        elif cmd == "exit":
+            print("Goodbye!")
+            break
+        elif cmd in COOLDOWNS:
+            cooldown = COOLDOWNS[cmd]
+            last_used = last_command_usage.get(cmd, 0)
+            if current_time - last_used >= cooldown:
+                if cmd == "/bal":
+                    Dank().bal(name)
+                elif cmd == "/dig":
+                    Dank().dig(name)
+                elif cmd == "/beg":
+                    Dank().beg(name)
+                elif cmd == "/crime":
+                    Crimegenerator().crime(username=name)
+                elif cmd == "/highlow":
+                    Dank().highlow(username=name)
+                last_command_usage[cmd] = current_time
+            else:
+                print(f"Command is on cooldown. Please wait {int(cooldown - (current_time - last_used))} seconds.")
+        elif cmd == "/update":
+            update_files()
         else:
             print("Command not found!")
 
-elif st == "2":
-    name = input("Enter your name: ")
-    c.execute("SELECT name FROM dank")
-    names = [row[0] for row in c.fetchall()]
-    conn.commit()
-    if name in names:
-        while run:
-            cd = input(f"{name}> ").lower()
-            current_time = time.time()
-            
-            if cd == "help":
-                print(f"Current Commands: ", end="")
-                print(Dank.Availablecommands(Dank))
-            elif cd == "exit":
-                exit()
-            elif cd in cooldowns:
-                if cd not in last_command_usage or current_time - last_command_usage[cd] >= cooldowns[cd]:
-                    if cd == "/bal":
-                        Dank().bal(name)
-                    elif cd == "/dig":
-                        Dank().dig(name)
-                    elif cd == "/beg":
-                        Dank().beg(name)
-                    elif cd == "/crime":
-                        user = Crimegenerator()
-                        user.crime(username=name)
-                    elif cd == "/highlow":
-                        user = Dank()
-                        user.highlow(username=name)
-                    last_command_usage[cd] = current_time  # Update last command usage time
-                else:
-                    print("Command is on cooldown. Please wait before using it again.")
-            elif cd == "/update":
-                update()
-            else:
-                print("Command not found!")
+def main():
+    init_db()
+    print("Welcome to the meme game >:)")
+    print("Playing for the first time?")
+    print("1.New Game\n2.Continue\n3.About the game\n4.Update Logs\n5.Exit\n")
+    choice = input("> ").strip()
+    print("")
+
+    if choice == "1":
+        name = input("Enter your name: ").strip()
+        names = get_names()
+        if name in names:
+            print("This user already exists! Continuing with the game.")
+        else:
+            add_user(name)
+        game_loop(name)
+    elif choice == "2":
+        name = input("Enter your name: ").strip()
+        if name in get_names():
+            game_loop(name)
+        else:
+            print("Name not found.")
+    elif choice == "3":
+        print("This game is still in progress\nExpect bugs or errors.\nSend bug reports for fixes.\nVersion-", VERSION)
+        time.sleep(2)
+    elif choice == "4":
+        print("Update Logs\n*Updates*\n1.No new commands in this version\n2.Fixed a lot of Bugs\nVersion-", VERSION)
+    elif choice == "5":
+        print("Goodbye!")
     else:
-        print("Name not found")
+        print("Invalid selection. Please enter a valid option.")
 
-elif st == "3":
-    print("This game is still in progress")
-    time.sleep(1)
-    print("So please expect bugs or errors")
-    time.sleep(1)
-    print("If you ever found errors or bugs, send me a picture of it so I can fix it in the next version")
-    time.sleep(1)
-    print(f"Version-{versionoffile}")
-    time.sleep(10)
-
-elif st == "4":
-    print("                             Update Logs")
-    print("                              *Updates*\n")
-    print("     1.No new commands in this version\n"
-          "     2.Fixed alot of Bugs \n\n\n"
-          f"                       Version-{versionoffile}")
-
-elif st == "5":
-    exit()
-
-    print("Invalid selection. Please enter a valid option.\n")
-    print("Are you stupid or something?\n")
-
+if __name__ == "__main__":
+    main()
