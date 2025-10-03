@@ -8,7 +8,7 @@ import hashlib
 conn = sqlite3.connect("dankdata.db")
 c = conn.cursor()
 run = True
-versionoffile = 0.4
+versionoffile = 0.5
 
 # Create table if not exists
 c.execute("""CREATE TABLE IF NOT EXISTS dank (
@@ -92,7 +92,7 @@ if st == "1":
         pass
     starter = [name, 0, 0]
     time.sleep(1)
-    c.execute(f"INSERT INTO dank VALUES (?, ?, ?)", starter)
+    c.execute("INSERT INTO dank VALUES (?, ?, ?)", starter)
     conn.commit()
     print(f"Hello, {name}\n")
     print("Type 'help' for more information\nOr 'exit' to exit the game\n")
@@ -121,7 +121,8 @@ if st == "1":
                     Dank().highlow(username=name)
                 last_command_usage[cd] = current_time  # Update last command usage time
             else:
-                print(f"Command is on cooldown. Please wait {cd}Seconds before using it again.")
+                remaining = int(cooldowns[cd] - (current_time - last_command_usage[cd]))
+                print(f"Command is on cooldown. Please wait {remaining} seconds before using it again.")
         elif cd == "/update":
             update()
         else:
@@ -177,12 +178,14 @@ elif st == "3":
     time.sleep(10)
 
 elif st == "4":
-    print("        Update Logs")
-    print("      *Updates*\n")
-    print(f"     1. Added new command < /highlow >\n\n\n  Version-{versionoffile}")
+    print("                             Update Logs")
+    print("                              *Updates*\n")
+    print("     1.No new commands in this version\n"
+          "     2.Fixed alot of Bugs \n\n\n"
+          f"                       Version-{versionoffile}")
 
 elif st == "5":
     exit()
 
-else:
+    print("Invalid selection. Please enter a valid option.\n")
     print("Are you stupid or something?\n")
