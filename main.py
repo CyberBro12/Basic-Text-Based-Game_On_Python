@@ -20,10 +20,14 @@ conn.commit()
 
 # Function to update files from GitHub
 def update():
+    
+
     def calculate_file_hash(filename):
-        with open(filename, "rb") as f:
-            file_contents = f.read()
-            file_hash = hashlib.md5(file_contents).hexdigest()
+        # Get full path relative to the script
+        full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+        with open(full_path, "rb") as f:
+            ile_contents = f.read()
+            file_hash = hashlib.md5(ile_contents).hexdigest()
             return file_hash
 
     def download_file(url, filename, expected_hash):
@@ -41,9 +45,22 @@ def update():
         else:
             print("Failed to update file")
 
-    def download_thread(url, filename, expected_hash):
-        thread = Thread(target=download_file, args=(url, filename, expected_hash))
-        thread.start()
+    def download_file(url, filename, expected_hash):
+        full_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+        response = requests.get(url)
+        if response.status_code == 200:
+            file_content = response.content
+            actual_hash = hashlib.md5(file_content).hexdigest()
+            if actual_hash == expected_hash:
+                print("File is up-to-date")
+            else:
+                with open(full_path, 'wb') as f:
+                    f.write(file_content)
+                print("File updated successfully")
+                print("Please restart the program to take effect!")
+        else:
+            print("Failed to update file")
+
 
     def main():
         files = [
@@ -54,10 +71,9 @@ def update():
 
         for url, filename in files:
             expected_hash = calculate_file_hash(filename)
-            download_thread(url, filename, expected_hash)
+            download_file(url, filename, expected_hash)
 
-    if __name__ == "__main__":
-        main()
+    main()
 
 print("Welcome to the meme game >:)")
 print("Playing for the first time?")
@@ -189,3 +205,4 @@ elif st == "5":
 
     print("Invalid selection. Please enter a valid option.\n")
     print("Are you stupid or something?\n")
+
